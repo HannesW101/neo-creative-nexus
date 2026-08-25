@@ -259,7 +259,7 @@ function Home() {
       {/* Old way vs ours */}
       <section className="border-y border-hairline bg-surface/30">
         <div className="mx-auto max-w-[92rem] px-5 py-28 md:px-10 md:py-40">
-          <div className="sd-panel">
+          <div className="sd-in">
             <p className="label-mono">The difference</p>
             <h2 className="display-md mt-6 max-w-3xl balance">
               The usual way, and the way we do it.
