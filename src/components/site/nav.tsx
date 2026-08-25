@@ -32,6 +32,17 @@ export function SiteNav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div
+        aria-hidden
+        className={`absolute inset-x-0 top-0 h-px transition-opacity duration-500 ${
+          scrolled ? "bg-hairline opacity-100" : "opacity-0"
+        }`}
+      >
+        <div
+          className="scroll-line h-px w-full"
+          style={{ transform: `scaleX(${progress})` }}
+        />
+      </div>
+      <div
         className={`mx-auto flex max-w-[92rem] items-center justify-between gap-6 px-5 transition-all duration-500 md:px-10 ${
           scrolled ? "py-3" : "py-6"
         }`}
