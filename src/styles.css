@@ -198,3 +198,82 @@
     transform: none;
   }
 }
+
+/* Pointer-tracked ember light for cards and panels */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    background: radial-gradient(
+      22rem circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--ember) 16%, transparent),
+      transparent 68%
+    );
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Fades the marquee into the page edges and pauses it on hover */
+@utility marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  &:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Thin ember read-out of scroll position */
+@utility scroll-line {
+  transform-origin: 0 50%;
+  background-image: linear-gradient(90deg, var(--ember-soft), var(--ember));
+}
+
+/* Light sweeping across a solid button on hover */
+@utility sheen {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-18deg);
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.35), transparent);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::after {
+    transform: translateX(120%) skewX(-18deg);
+  }
+}
+
+@utility balance {
+  text-wrap: balance;
+}
+
+@utility hairline-ember {
+  border: 1px solid var(--hairline);
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+  &:hover {
+    border-color: color-mix(in oklab, var(--ember) 45%, transparent);
+    box-shadow: var(--shadow-ember);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -11,16 +11,37 @@ const links = [
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      const y = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrolled(y > 24);
+      setProgress(max > 0 ? Math.min(1, y / max) : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
+      <div
+        aria-hidden
+        className={`absolute inset-x-0 top-0 h-px transition-opacity duration-500 ${
+          scrolled ? "bg-hairline opacity-100" : "opacity-0"
+        }`}
+      >
+        <div
+          className="scroll-line h-px w-full"
+          style={{ transform: `scaleX(${progress})` }}
+        />
+      </div>
       <div
         className={`mx-auto flex max-w-[92rem] items-center justify-between gap-6 px-5 transition-all duration-500 md:px-10 ${
           scrolled ? "py-3" : "py-6"
