@@ -238,10 +238,10 @@ function Home() {
 
         <div className="mt-16 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline md:grid-cols-2 lg:grid-cols-3">
           {included.map((item, i) => (
-            <Reveal key={item.n} delay={(i % 3) * 90} className="contents">
+            <Reveal key={item.n} delay={(i % 3) * 90}>
               <Spotlight
                 as="article"
-                className="group bg-surface p-8 transition-colors hover:bg-surface-raised"
+                className="group h-full bg-surface p-8 transition-colors hover:bg-surface-raised"
               >
                 <span className="font-mono text-xs text-ember">{item.n}</span>
                 <h3 className="mt-6 text-2xl balance">{item.title}</h3>
@@ -265,8 +265,8 @@ function Home() {
 
           <ul className="mt-14 space-y-px overflow-hidden rounded-lg border border-hairline bg-hairline">
             {comparison.map((row, i) => (
-              <Reveal key={row.ours} delay={i * 70} className="contents">
-                <li className="grid gap-3 bg-surface p-6 md:grid-cols-2 md:gap-10 md:p-8">
+              <Reveal key={row.ours} delay={i * 70} as="li">
+                <div className="grid gap-3 bg-surface p-6 md:grid-cols-2 md:gap-10 md:p-8">
                   <p className="flex items-start gap-4 text-muted-foreground line-through decoration-muted-foreground/40">
                     <span className="mt-1 font-mono text-xs not-italic no-underline">0{i + 1}</span>
                     {row.old}
@@ -275,7 +275,7 @@ function Home() {
                     <span className="mt-1 text-ember">&#10022;</span>
                     {row.ours}
                   </p>
-                </li>
+                </div>
               </Reveal>
             ))}
           </ul>
@@ -306,9 +306,8 @@ function Home() {
 
           <ol className="space-y-px overflow-hidden rounded-lg border border-hairline bg-hairline">
             {process.map((step, i) => (
-              <Reveal key={step.n} delay={i * 90} className="contents">
+              <Reveal key={step.n} delay={i * 90} as="li">
                 <Spotlight
-                  as="li"
                   className="flex gap-6 bg-surface p-8 transition-colors hover:bg-surface-raised md:gap-10 md:p-10"
                 >
                   <span className="font-display text-4xl text-ember/70 md:text-5xl">{step.n}</span>
