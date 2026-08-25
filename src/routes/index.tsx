@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import emberTexture from "@/assets/ember-texture.jpg";
-import { Reveal } from "@/components/site/reveal";
 import { Spotlight } from "@/components/site/spotlight";
 
 export const Route = createFileRoute("/")({
@@ -19,6 +18,8 @@ export const Route = createFileRoute("/")({
         content:
           "One monthly fee covers the build, hosting, security and updates. Live in 3 to 5 business days, cancel anytime.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
@@ -42,7 +43,7 @@ const included = [
   {
     n: "02",
     title: "Hosting and security on us",
-    body: "SSL, backups and uptime are handled. Nothing to patch, no second invoice arriving from someone else.",
+    body: "SSL, backups and uptime are handled. Nothing to patch, no second invoice from someone you never met.",
   },
   {
     n: "03",
@@ -73,7 +74,7 @@ const comparison = [
   },
   {
     old: "Hosting billed by someone else you never met",
-    ours: "Hosting, SSL and backups inside the same line item",
+    ours: "Hosting, SSL and backups inside one line item",
   },
   {
     old: "A quote every time you want a photo swapped",
@@ -108,7 +109,7 @@ const process = [
   {
     n: "04",
     title: "Ongoing care",
-    body: "Hosting, security and your included updates keep running every month without you having to chase us.",
+    body: "Hosting, security and your included updates keep running every month without you chasing us.",
   },
 ];
 
@@ -141,12 +142,12 @@ function Home() {
 
   return (
     <div>
-      {/* Hero */}
+      {/* Hero: one idea, room to breathe */}
       <section
         ref={heroRef as never}
-        className="relative grain overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28"
+        className="relative grain flex min-h-svh items-center overflow-hidden pt-32 pb-24 md:pt-40"
       >
-        <div className="pointer-events-none absolute inset-0 -z-10 hairline-grid opacity-60" />
+        <div className="pointer-events-none absolute inset-0 -z-10 hairline-grid opacity-50" />
         <div
           className="pointer-events-none absolute -top-40 right-[-10%] -z-10 size-[38rem] rounded-full bg-ember/20 blur-[140px] transition-transform duration-[1200ms] ease-out"
           style={{ transform: "translate3d(var(--px, 0px), var(--py, 0px), 0)" }}
@@ -158,59 +159,61 @@ function Home() {
           }}
         />
 
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+        <div className="mx-auto w-full max-w-[92rem] px-5 md:px-10">
           <p className="label-mono rise">Web design and hosting, South Africa</p>
 
-          <h1 className="display-xl rise mt-6 max-w-5xl">
+          <h1 className="display-xl rise mt-8 max-w-5xl">
             Your website,
             <br />
             <span className="ember-text">run for you</span> monthly.
           </h1>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-            <p className="max-w-xl balance text-lg leading-relaxed text-muted-foreground md:text-xl">
-              Stop paying thousands upfront for a site that then sits there. We build it, host it,
-              secure it and keep it current for one flat fee, so there is no big invoice to find
-              before the site has made you a cent.
-            </p>
+          <p className="rise mt-10 max-w-lg text-lg leading-relaxed text-muted-foreground md:text-xl">
+            We build it, host it and keep it current for one flat fee.
+          </p>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <Link
-                to="/pricing"
-                className="group sheen inline-flex items-center gap-3 rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-              >
-                See plans and pricing
-                <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-3 rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface"
-              >
-                Email us
-              </Link>
-            </div>
+          <div className="rise mt-12 flex flex-wrap items-center gap-3">
+            <Link
+              to="/pricing"
+              className="group sheen inline-flex items-center gap-3 rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              See plans and pricing
+              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-3 rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface"
+            >
+              Email us
+            </Link>
           </div>
+        </div>
 
-          <dl className="mt-16 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-3">
-            {[
-              ["Live in", "3 to 5 business days"],
-              ["Included", "Hosting, SSL, backups"],
-              ["Contract", "Month to month, cancel anytime"],
-            ].map(([k, v], i) => (
-              <Reveal key={k} delay={i * 90}>
-                <Spotlight className="h-full bg-surface/70 p-6 backdrop-blur-xl">
-                  <dt className="label-mono">{k}</dt>
-                  <dd className="mt-3 font-display text-xl leading-tight">{v}</dd>
-                </Spotlight>
-              </Reveal>
-            ))}
-          </dl>
+        <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2">
+          <span className="label-mono opacity-60">Scroll</span>
+        </div>
+      </section>
+
+      {/* The promise, three lines, one screen */}
+      <section className="stage mx-auto max-w-[92rem] px-5 py-24 md:px-10">
+        <p className="sd-in label-mono">The short version</p>
+        <div className="mt-12 space-y-10 md:space-y-14">
+          {[
+            ["Live in", "3 to 5 business days"],
+            ["Included", "Hosting, SSL, backups, updates"],
+            ["Contract", "Month to month, cancel anytime"],
+          ].map(([k, v]) => (
+            <div key={k} className="sd-in border-t border-hairline pt-6 md:flex md:items-baseline md:gap-16">
+              <p className="label-mono md:w-40 md:shrink-0">{k}</p>
+              <p className="display-lede mt-4 md:mt-0">{v}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Sector marquee */}
       <section
-        className="marquee-mask border-y border-hairline py-5"
+        className="marquee-mask border-y border-hairline py-6"
         aria-label="Industries we build for"
       >
         <div className="marquee-track gap-10">
@@ -223,72 +226,69 @@ function Home() {
         </div>
       </section>
 
-      {/* What you get */}
-      <section className="mx-auto max-w-[92rem] px-5 py-24 md:px-10 md:py-36">
-        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
+      {/* What you get: sticky title, one card per screen */}
+      <section className="mx-auto max-w-[92rem] px-5 md:px-10">
+        <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="pt-24 lg:sticky lg:top-32 lg:h-fit lg:pt-36">
             <p className="label-mono">What you get</p>
-            <h2 className="display-md mt-5 max-w-2xl balance">One fee. No add-on invoices.</h2>
+            <h2 className="display-md mt-6 balance">One fee. No add-on invoices.</h2>
+            <p className="mt-8 max-w-sm leading-relaxed text-muted-foreground">
+              Most studios quote a build, then bill again for hosting, patches and every small edit
+              after launch. All of it sits in the same line item here.
+            </p>
+            <p className="label-mono mt-10 opacity-60">Six things, keep scrolling</p>
           </div>
-          <p className="max-w-sm text-muted-foreground">
-            Most studios quote a build, then bill again for hosting, patches and every small edit
-            after launch. We put all of it in the same line item.
-          </p>
-        </Reveal>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline md:grid-cols-2 lg:grid-cols-3">
-          {included.map((item, i) => (
-            <Reveal key={item.n} delay={(i % 3) * 90}>
-              <Spotlight
-                as="article"
-                className="group h-full bg-surface p-8 transition-colors hover:bg-surface-raised"
-              >
-                <span className="font-mono text-xs text-ember">{item.n}</span>
-                <h3 className="mt-6 text-2xl balance">{item.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-                <span className="absolute inset-x-8 bottom-0 h-px origin-left scale-x-0 bg-ember transition-transform duration-500 group-hover:scale-x-100" />
-              </Spotlight>
-            </Reveal>
-          ))}
+          <ol className="pb-12 lg:pb-24">
+            {included.map((item) => (
+              <li key={item.n} className="stage py-6">
+                <div className="sd-panel">
+                  <span className="font-mono text-xs text-ember">{item.n}</span>
+                  <div className="sd-bar mt-4 h-px origin-left bg-ember/60" />
+                  <h3 className="display-lede mt-8 max-w-xl balance">{item.title}</h3>
+                  <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+                    {item.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
       {/* Old way vs ours */}
       <section className="border-y border-hairline bg-surface/30">
-        <div className="mx-auto max-w-[92rem] px-5 py-24 md:px-10 md:py-32">
-          <Reveal>
+        <div className="mx-auto max-w-[92rem] px-5 py-28 md:px-10 md:py-40">
+          <div className="sd-in">
             <p className="label-mono">The difference</p>
-            <h2 className="display-md mt-5 max-w-3xl balance">
+            <h2 className="display-md mt-6 max-w-3xl balance">
               The usual way, and the way we do it.
             </h2>
-          </Reveal>
+          </div>
 
-          <ul className="mt-14 space-y-px overflow-hidden rounded-lg border border-hairline bg-hairline">
+          <ul className="mt-20 space-y-16 md:space-y-24">
             {comparison.map((row, i) => (
-              <Reveal key={row.ours} delay={i * 70} as="li">
-                <div className="grid gap-3 bg-surface p-6 md:grid-cols-2 md:gap-10 md:p-8">
-                  <p className="flex items-start gap-4 text-muted-foreground line-through decoration-muted-foreground/40">
-                    <span className="mt-1 font-mono text-xs not-italic no-underline">0{i + 1}</span>
-                    {row.old}
-                  </p>
-                  <p className="flex items-start gap-4 font-display text-xl leading-snug">
-                    <span className="mt-1 text-ember">&#10022;</span>
-                    {row.ours}
-                  </p>
-                </div>
-              </Reveal>
+              <li key={row.ours} className="sd-in grid gap-6 border-t border-hairline pt-8 md:grid-cols-2 md:gap-16">
+                <p className="flex items-start gap-4 text-muted-foreground line-through decoration-muted-foreground/40">
+                  <span className="mt-1 font-mono text-xs no-underline">0{i + 1}</span>
+                  {row.old}
+                </p>
+                <p className="display-lede text-[clamp(1.5rem,2.6vw,2.25rem)] leading-tight">
+                  {row.ours}
+                </p>
+              </li>
             ))}
           </ul>
         </div>
       </section>
 
       {/* Process */}
-      <section id="process" className="relative grain border-y border-hairline">
-        <div className="mx-auto grid max-w-[92rem] gap-16 px-5 py-24 md:px-10 md:py-36 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="lg:sticky lg:top-32 lg:self-start">
+      <section id="process" className="relative grain border-b border-hairline">
+        <div className="mx-auto grid max-w-[92rem] gap-16 px-5 md:px-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="pt-24 lg:sticky lg:top-32 lg:h-fit lg:pt-36">
             <p className="label-mono">How it works</p>
-            <h2 className="display-md mt-5 balance">From first email to live site.</h2>
-            <div className="group relative mt-10 overflow-hidden rounded-lg border border-hairline">
+            <h2 className="display-md mt-6 balance">From first email to live site.</h2>
+            <div className="group relative mt-12 overflow-hidden rounded-lg border border-hairline">
               <img
                 src={emberTexture}
                 alt="Glowing embers running through dark charcoal"
@@ -304,51 +304,45 @@ function Home() {
             </div>
           </div>
 
-          <ol className="space-y-px overflow-hidden rounded-lg border border-hairline bg-hairline">
-            {process.map((step, i) => (
-              <Reveal key={step.n} delay={i * 90} as="li">
-                <Spotlight
-                  className="flex gap-6 bg-surface p-8 transition-colors hover:bg-surface-raised md:gap-10 md:p-10"
-                >
-                  <span className="font-display text-4xl text-ember/70 md:text-5xl">{step.n}</span>
-                  <div>
-                    <h3 className="text-2xl md:text-3xl">{step.title}</h3>
-                    <p className="mt-3 max-w-lg leading-relaxed text-muted-foreground">
-                      {step.body}
-                    </p>
-                  </div>
-                </Spotlight>
-              </Reveal>
+          <ol className="pb-16 lg:pb-28">
+            {process.map((step) => (
+              <li key={step.n} className="stage py-6">
+                <div className="sd-panel">
+                  <span className="font-display text-6xl text-ember/60 md:text-7xl">{step.n}</span>
+                  <h3 className="display-lede mt-8">{step.title}</h3>
+                  <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+                    {step.body}
+                  </p>
+                </div>
+              </li>
             ))}
           </ol>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-[92rem] px-5 py-24 md:px-10 md:py-36">
-        <Reveal>
-          <Spotlight className="grain hairline-ember overflow-hidden rounded-lg bg-surface p-10 md:p-20">
-            <div className="pointer-events-none absolute -bottom-32 -left-20 size-[30rem] rounded-full bg-ember/25 blur-[130px]" />
-            <p className="label-mono">Next step</p>
-            <h2 className="display-md mt-5 max-w-3xl balance">
-              Send one email about your business. We reply within a business day.
-            </h2>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link
-                to="/contact"
-                className="sheen rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-              >
-                Tell us what you need
-              </Link>
-              <Link
-                to="/pricing"
-                className="rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface-raised"
-              >
-                Compare plans
-              </Link>
-            </div>
-          </Spotlight>
-        </Reveal>
+      <section className="mx-auto flex min-h-[80svh] max-w-[92rem] items-center px-5 py-28 md:px-10">
+        <Spotlight className="sd-in grain hairline-ember w-full overflow-hidden rounded-lg bg-surface p-10 md:p-20">
+          <div className="pointer-events-none absolute -bottom-32 -left-20 size-[30rem] rounded-full bg-ember/25 blur-[130px]" />
+          <p className="label-mono">Next step</p>
+          <h2 className="display-md mt-6 max-w-3xl balance">
+            Send one email about your business. We reply within a business day.
+          </h2>
+          <div className="mt-12 flex flex-wrap gap-3">
+            <Link
+              to="/contact"
+              className="sheen rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              Tell us what you need
+            </Link>
+            <Link
+              to="/pricing"
+              className="rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface-raised"
+            >
+              Compare plans
+            </Link>
+          </div>
+        </Spotlight>
       </section>
     </div>
   );
