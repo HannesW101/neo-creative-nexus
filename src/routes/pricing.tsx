@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { Reveal } from "@/components/site/reveal";
+import { Spotlight } from "@/components/site/spotlight";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -117,7 +119,7 @@ function Pricing() {
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="label-mono">Pricing</p>
-          <h1 className="display-md mt-5 max-w-2xl">Pick a plan. Nothing else to negotiate.</h1>
+          <h1 className="display-md mt-5 max-w-2xl balance">Pick a plan. Nothing else to negotiate.</h1>
           <p className="mt-6 max-w-lg text-muted-foreground">
             Billed monthly, month to month. Other currencies convert as a guide and we confirm final
             billing currency with you directly.
@@ -142,11 +144,12 @@ function Pricing() {
       </div>
 
       <div className="mt-14 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline md:grid-cols-2 xl:grid-cols-3">
-        {plans.map((plan) => (
-          <article
-            key={plan.name}
-            className={`relative flex flex-col bg-surface p-8 transition-colors hover:bg-surface-raised ${
-              plan.popular ? "xl:row-span-1" : ""
+        {plans.map((plan, i) => (
+          <Reveal key={plan.name} delay={(i % 3) * 80}>
+          <Spotlight
+            as="article"
+            className={`flex h-full flex-col bg-surface p-8 transition-colors hover:bg-surface-raised ${
+              plan.popular ? "ring-1 ring-inset ring-ember/30" : ""
             }`}
           >
             {plan.popular && (
@@ -176,7 +179,8 @@ function Pricing() {
               {plan.plus ? "Talk to us" : "Get started"}
               <span>&rarr;</span>
             </Link>
-          </article>
+          </Spotlight>
+          </Reveal>
         ))}
 
         <div className="flex flex-col justify-center bg-surface p-8">
