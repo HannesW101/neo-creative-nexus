@@ -288,6 +288,18 @@
       animation-range: exit -10% exit 90%;
     }
 
+    /* Enters on the way in, quietly steps back on the way out */
+    .sd-panel {
+      animation:
+        sdIn linear both,
+        sdDim linear both;
+      animation-timeline: view(), view();
+      animation-range:
+        entry 8% cover 34%,
+        exit -5% exit 95%;
+    }
+
+
     .sd-drift {
       animation: sdDrift linear both;
       animation-timeline: view();
