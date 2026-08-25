@@ -267,6 +267,110 @@
   }
 }
 
+/* Scroll-driven reveals: content composes itself as you move down the page */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sd-in {
+      animation: sdIn linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 34%;
+    }
+
+    .sd-slide {
+      animation: sdSlide linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 40%;
+    }
+
+    .sd-dim {
+      animation: sdDim linear both;
+      animation-timeline: view();
+      animation-range: exit -10% exit 90%;
+    }
+
+    .sd-drift {
+      animation: sdDrift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    .sd-bar {
+      animation: sdBar linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 60%;
+    }
+  }
+}
+
+@keyframes sdIn {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes sdSlide {
+  from {
+    opacity: 0;
+    transform: translateY(4rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sdDim {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0.15;
+    transform: translateY(-2rem) scale(0.985);
+  }
+}
+
+@keyframes sdDrift {
+  from {
+    transform: translateY(4rem);
+  }
+  to {
+    transform: translateY(-4rem);
+  }
+}
+
+@keyframes sdBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Big quiet type for one-idea-per-screen panels */
+@utility display-lede {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  font-size: clamp(2.1rem, 5.2vw, 4rem);
+}
+
+@utility stage {
+  min-height: 78svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
