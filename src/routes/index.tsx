@@ -1,7 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
-import emberTexture from "@/assets/ember-texture.jpg";
+import { createFileRoute, ClientOnly, Link } from "@tanstack/react-router";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import lavaFlow from "@/assets/lava-flow.jpg";
 import { Spotlight } from "@/components/site/spotlight";
+import { SplitLine } from "@/components/site/split-text";
+import { Magnetic } from "@/components/site/magnetic";
+
+const LavaCanvas = lazy(() => import("@/components/site/lava-canvas"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -137,19 +141,75 @@ function useHeroPointer() {
   return ref;
 }
 
+/** Counts up to a number the first time it comes into view. */
+function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setValue(to);
+      return;
+    }
+    let raf = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        io.disconnect();
+        const start = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min((now - start) / 1400, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setValue(Math.round(to * eased));
+          if (t < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(node);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [to]);
+
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  );
+}
+
 function Home() {
   const heroRef = useHeroPointer();
 
   return (
     <div>
-      {/* Hero: one idea, room to breathe */}
+      {/* Page-wide scroll readout */}
+      <div
+        aria-hidden
+        className="sd-page-bar pointer-events-none fixed top-0 left-0 z-50 h-px w-full origin-left bg-gradient-to-r from-ember-soft to-ember"
+      />
+
+      {/* Hero: living lava field behind one idea */}
       <section
         ref={heroRef as never}
         className="relative grain flex min-h-svh items-center overflow-hidden pt-32 pb-24 md:pt-40"
       >
-        <div className="pointer-events-none absolute inset-0 -z-10 hairline-grid opacity-50" />
+        <div className="pointer-events-none absolute inset-0 -z-20 hairline-grid opacity-40" />
+
+        <ClientOnly>
+          <Suspense fallback={null}>
+            <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-[-6%] -z-10 h-[85%] w-full opacity-70 mix-blend-screen" />
+          </Suspense>
+        </ClientOnly>
+
         <div
-          className="pointer-events-none absolute -top-40 right-[-10%] -z-10 size-[38rem] rounded-full bg-ember/20 blur-[140px] transition-transform duration-[1200ms] ease-out"
+          className="breathe pointer-events-none absolute -top-40 right-[-10%] -z-10 size-[38rem] rounded-full bg-ember/20 blur-[140px]"
           style={{ transform: "translate3d(var(--px, 0px), var(--py, 0px), 0)" }}
         />
         <div
@@ -159,59 +219,100 @@ function Home() {
           }}
         />
 
-        <div className="mx-auto w-full max-w-[92rem] px-5 md:px-10">
+        <div className="relative mx-auto w-full max-w-[92rem] px-5 md:px-10">
           <p className="label-mono rise">Web design and hosting, South Africa</p>
 
-          <h1 className="display-xl rise mt-8 max-w-5xl">
-            Your website,
+          <h1 className="display-xl mt-8 max-w-5xl">
+            <SplitLine text="Your website," delay={0.15} />
             <br />
-            <span className="ember-text">run for you</span> monthly.
+            <span className="ember-flow">
+              <SplitLine text="run for you" delay={0.35} />
+            </span>{" "}
+            <SplitLine text="monthly." delay={0.55} />
           </h1>
 
-          <p className="rise mt-10 max-w-lg text-lg leading-relaxed text-muted-foreground md:text-xl">
+          <p
+            className="rise mt-10 max-w-lg text-lg leading-relaxed text-muted-foreground md:text-xl"
+            style={{ animationDelay: "0.7s" }}
+          >
             We build it, host it and keep it current for one flat fee.
           </p>
 
-          <div className="rise mt-12 flex flex-wrap items-center gap-3">
-            <Link
-              to="/pricing"
-              className="group sheen inline-flex items-center gap-3 rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-            >
-              See plans and pricing
-              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-3 rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface"
-            >
-              Email us
-            </Link>
+          <div
+            className="rise mt-12 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: "0.85s" }}
+          >
+            <Magnetic strength={10}>
+              <Link
+                to="/pricing"
+                className="group sheen inline-flex items-center gap-3 rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground shadow-ember transition-transform hover:-translate-y-0.5"
+              >
+                See plans and pricing
+                <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+              </Link>
+            </Magnetic>
+            <Magnetic strength={8}>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-3 rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface"
+              >
+                Email us
+              </Link>
+            </Magnetic>
           </div>
         </div>
 
-        <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2">
+        <div className="pointer-events-none absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3">
           <span className="label-mono opacity-60">Scroll</span>
+          <span className="h-10 w-px overflow-hidden bg-hairline">
+            <span className="block h-1/2 w-px animate-[scrollCue_2.4s_ease-in-out_infinite] bg-ember" />
+          </span>
         </div>
       </section>
 
-      {/* The promise, three lines, one screen */}
-      <section className="stage mx-auto max-w-[92rem] px-5 py-24 md:px-10">
-        <p className="sd-in label-mono">The short version</p>
-        <div className="mt-12 space-y-10 md:space-y-14">
+      {/* Numbers that count themselves in */}
+      <section className="border-y border-hairline bg-surface/20">
+        <div className="mx-auto grid max-w-[92rem] gap-12 px-5 py-16 md:grid-cols-3 md:px-10 md:py-20">
           {[
-            ["Live in", "3 to 5 business days"],
-            ["Included", "Hosting, SSL, backups, updates"],
-            ["Contract", "Month to month, cancel anytime"],
-          ].map(([k, v]) => (
-            <div key={k} className="sd-in border-t border-hairline pt-6 md:flex md:items-baseline md:gap-16">
-              <p className="label-mono md:w-40 md:shrink-0">{k}</p>
-              <p className="display-lede mt-4 md:mt-0">{v}</p>
+            { v: 5, s: " days", k: "Build and review window" },
+            { v: 100, s: "%", k: "Hosting and SSL included" },
+            { v: 0, s: " R", k: "Upfront build fee" },
+          ].map((stat) => (
+            <div key={stat.k} className="sd-in">
+              <p className="display-md ember-flow">
+                <CountUp to={stat.v} suffix={stat.s} />
+              </p>
+              <p className="label-mono mt-4">{stat.k}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Who it is for: still, readable, no motion for its own sake */}
+      {/* The promise, three lines, one screen */}
+      <section className="stage relative mx-auto max-w-[92rem] px-5 py-24 md:px-10">
+        <span
+          aria-hidden
+          className="sd-rule pointer-events-none absolute top-24 left-5 hidden h-[70%] w-px bg-gradient-to-b from-ember/70 to-transparent md:block md:left-10"
+        />
+        <p className="sd-in label-mono md:pl-12">The short version</p>
+        <div className="mt-12 space-y-10 md:space-y-14 md:pl-12">
+          {[
+            ["Live in", "3 to 5 business days"],
+            ["Included", "Hosting, SSL, backups, updates"],
+            ["Contract", "Month to month, cancel anytime"],
+          ].map(([k, v]) => (
+            <div
+              key={k}
+              className="sd-in border-t border-hairline pt-6 md:flex md:items-baseline md:gap-16"
+            >
+              <p className="label-mono md:w-40 md:shrink-0">{k}</p>
+              <p className="display-lede sd-heat mt-4 md:mt-0">{v}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Who it is for */}
       <section className="border-y border-hairline" aria-label="Industries we build for">
         <div className="mx-auto max-w-[92rem] px-5 py-20 md:px-10 md:py-28">
           <p className="sd-in label-mono">Who we build for</p>
@@ -219,9 +320,11 @@ function Home() {
             {sectors.map((s) => (
               <li
                 key={s}
-                className="sd-wipe flex items-baseline gap-4 border-t border-hairline pt-5"
+                className="group sd-wipe flex items-baseline gap-4 border-t border-hairline pt-5 transition-colors hover:border-ember/50"
               >
-                <span className="text-ember">&#10022;</span>
+                <span className="text-ember transition-transform duration-500 group-hover:rotate-90">
+                  &#10022;
+                </span>
                 <span className="font-display text-2xl leading-tight md:text-[1.75rem]">{s}</span>
               </li>
             ))}
@@ -229,28 +332,30 @@ function Home() {
         </div>
       </section>
 
-      {/* Lava sheet: a single held image that blooms open as you pass it */}
-      <section className="relative mx-auto flex min-h-[95svh] max-w-[92rem] items-center px-5 py-20 md:px-10">
-        <div className="sd-bloom relative w-full overflow-hidden">
-          <img
-            src={emberTexture}
-            alt="Molten lava glowing through dark rock"
-            width={1600}
-            height={1008}
-            loading="lazy"
-            className="sd-parallax h-[60svh] w-full object-cover md:h-[70svh]"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-          <div className="absolute inset-x-6 bottom-8 md:inset-x-14 md:bottom-14">
-            <p className="label-mono">Why it works</p>
-            <p className="display-lede mt-5 max-w-2xl balance">
-              A site that stays warm, gets found and never sends you a surprise bill.
-            </p>
+      {/* Lava sheet: opens from a slit into a full-bleed molten frame */}
+      <section className="relative flex min-h-[100svh] items-center py-20">
+        <div className="mx-auto w-full max-w-[100rem] px-3 md:px-6">
+          <div className="sd-open relative w-full overflow-hidden rounded-[1rem]">
+            <img
+              src={lavaFlow}
+              alt="Molten lava glowing through cracked black volcanic rock"
+              width={1920}
+              height={1200}
+              loading="lazy"
+              className="sd-parallax h-[64svh] w-full object-cover md:h-[78svh]"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+            <div className="absolute inset-x-6 bottom-8 md:inset-x-14 md:bottom-14">
+              <p className="label-mono">Why it works</p>
+              <p className="display-lede sd-track mt-5 max-w-2xl balance">
+                A site that stays warm, gets found and never sends you a surprise bill.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* What you get: sticky title, one card per screen */}
+      {/* What you get: sticky title, one panel per screen, tilting through view */}
       <section className="mx-auto max-w-[92rem] px-5 md:px-10">
         <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="pt-24 lg:sticky lg:top-32 lg:h-fit lg:pt-36">
@@ -266,14 +371,14 @@ function Home() {
           <ol className="pb-12 lg:pb-24">
             {included.map((item) => (
               <li key={item.n} className="stage py-6">
-                <div className="sd-panel">
+                <Spotlight className="sd-tilt hairline-ember rounded-lg bg-surface/40 p-8 md:p-12">
                   <span className="font-mono text-xs text-ember">{item.n}</span>
                   <div className="sd-bar mt-4 h-px origin-left bg-ember/60" />
                   <h3 className="display-lede mt-8 max-w-xl balance">{item.title}</h3>
                   <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
                     {item.body}
                   </p>
-                </div>
+                </Spotlight>
               </li>
             ))}
           </ol>
@@ -292,12 +397,15 @@ function Home() {
 
           <ul className="mt-20 space-y-16 md:space-y-24">
             {comparison.map((row, i) => (
-              <li key={row.ours} className="sd-in grid gap-6 border-t border-hairline pt-8 md:grid-cols-2 md:gap-16">
+              <li
+                key={row.ours}
+                className="sd-in grid gap-6 border-t border-hairline pt-8 md:grid-cols-2 md:gap-16"
+              >
                 <p className="flex items-start gap-4 text-muted-foreground line-through decoration-muted-foreground/40">
                   <span className="mt-1 font-mono text-xs no-underline">0{i + 1}</span>
                   {row.old}
                 </p>
-                <p className="display-lede text-[clamp(1.5rem,2.6vw,2.25rem)] leading-tight">
+                <p className="display-lede sd-heat text-[clamp(1.5rem,2.6vw,2.25rem)] leading-tight">
                   {row.ours}
                 </p>
               </li>
@@ -314,12 +422,12 @@ function Home() {
             <h2 className="display-md mt-6 balance">From first email to live site.</h2>
             <div className="group relative mt-12 overflow-hidden rounded-lg border border-hairline">
               <img
-                src={emberTexture}
-                alt="Glowing embers running through dark charcoal"
-                width={1600}
-                height={1008}
+                src={lavaFlow}
+                alt="Glowing lava veins running through dark rock"
+                width={1920}
+                height={1200}
                 loading="lazy"
-                className="h-56 w-full object-cover opacity-80 transition-transform duration-[1400ms] ease-out group-hover:scale-105"
+                className="h-56 w-full object-cover opacity-80 transition-transform duration-[1400ms] ease-out group-hover:scale-110"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
               <p className="absolute bottom-5 left-5 max-w-[16rem] font-display text-xl leading-tight">
@@ -333,7 +441,7 @@ function Home() {
               <li key={step.n} className="stage py-6">
                 <div className="sd-panel">
                   <span className="font-display text-6xl text-ember/60 md:text-7xl">{step.n}</span>
-                  <h3 className="display-lede mt-8">{step.title}</h3>
+                  <h3 className="display-lede sd-track mt-8">{step.title}</h3>
                   <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
                     {step.body}
                   </p>
@@ -344,27 +452,38 @@ function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mx-auto flex min-h-[80svh] max-w-[92rem] items-center px-5 py-28 md:px-10">
-        <Spotlight className="sd-in grain hairline-ember w-full overflow-hidden rounded-lg bg-surface p-10 md:p-20">
-          <div className="pointer-events-none absolute -bottom-32 -left-20 size-[30rem] rounded-full bg-ember/25 blur-[130px]" />
-          <p className="label-mono">Next step</p>
-          <h2 className="display-md mt-6 max-w-3xl balance">
-            Send one email about your business. We reply within a business day.
-          </h2>
-          <div className="mt-12 flex flex-wrap gap-3">
-            <Link
-              to="/contact"
-              className="sheen rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-            >
-              Tell us what you need
-            </Link>
-            <Link
-              to="/pricing"
-              className="rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface-raised"
-            >
-              Compare plans
-            </Link>
+      {/* CTA with a live lava floor */}
+      <section className="mx-auto flex min-h-[85svh] max-w-[92rem] items-center px-5 py-28 md:px-10">
+        <Spotlight className="sd-in grain hairline-ember relative w-full overflow-hidden rounded-lg bg-surface p-10 md:p-20">
+          <ClientOnly>
+            <Suspense fallback={null}>
+              <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 w-full opacity-45 mix-blend-screen" />
+            </Suspense>
+          </ClientOnly>
+          <div className="breathe pointer-events-none absolute -bottom-32 -left-20 size-[30rem] rounded-full bg-ember/25 blur-[130px]" />
+          <div className="relative">
+            <p className="label-mono">Next step</p>
+            <h2 className="display-md mt-6 max-w-3xl balance">
+              Send one email about your business. We reply within a business day.
+            </h2>
+            <div className="mt-12 flex flex-wrap gap-3">
+              <Magnetic strength={10}>
+                <Link
+                  to="/contact"
+                  className="sheen inline-block rounded-full bg-ember px-7 py-4 font-medium text-primary-foreground shadow-ember transition-transform hover:-translate-y-0.5"
+                >
+                  Tell us what you need
+                </Link>
+              </Magnetic>
+              <Magnetic strength={8}>
+                <Link
+                  to="/pricing"
+                  className="inline-block rounded-full border border-hairline px-7 py-4 font-medium transition-colors hover:bg-surface-raised"
+                >
+                  Compare plans
+                </Link>
+              </Magnetic>
+            </div>
           </div>
         </Spotlight>
       </section>
