@@ -211,18 +211,42 @@ function Home() {
         </div>
       </section>
 
-      {/* Sector marquee */}
-      <section
-        className="marquee-mask border-y border-hairline py-6"
-        aria-label="Industries we build for"
-      >
-        <div className="marquee-track gap-10">
-          {[...sectors, ...sectors].map((s, i) => (
-            <span key={i} className="flex items-center gap-10 whitespace-nowrap">
-              <span className="font-display text-2xl text-muted-foreground md:text-3xl">{s}</span>
-              <span className="text-ember">&#10022;</span>
-            </span>
-          ))}
+      {/* Who it is for: still, readable, no motion for its own sake */}
+      <section className="border-y border-hairline" aria-label="Industries we build for">
+        <div className="mx-auto max-w-[92rem] px-5 py-20 md:px-10 md:py-28">
+          <p className="sd-in label-mono">Who we build for</p>
+          <ul className="mt-10 grid gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {sectors.map((s) => (
+              <li
+                key={s}
+                className="sd-wipe flex items-baseline gap-4 border-t border-hairline pt-5"
+              >
+                <span className="text-ember">&#10022;</span>
+                <span className="font-display text-2xl leading-tight md:text-[1.75rem]">{s}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Lava sheet: a single held image that blooms open as you pass it */}
+      <section className="relative mx-auto flex min-h-[95svh] max-w-[92rem] items-center px-5 py-20 md:px-10">
+        <div className="sd-bloom relative w-full overflow-hidden">
+          <img
+            src={emberTexture}
+            alt="Molten lava glowing through dark rock"
+            width={1600}
+            height={1008}
+            loading="lazy"
+            className="sd-parallax h-[60svh] w-full object-cover md:h-[70svh]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          <div className="absolute inset-x-6 bottom-8 md:inset-x-14 md:bottom-14">
+            <p className="label-mono">Why it works</p>
+            <p className="display-lede mt-5 max-w-2xl balance">
+              A site that stays warm, gets found and never sends you a surprise bill.
+            </p>
+          </div>
         </div>
       </section>
 
