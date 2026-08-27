@@ -388,6 +388,44 @@
   }
 }
 
+@keyframes sdWipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(1.5rem);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@keyframes sdBloom {
+  from {
+    transform: scale(0.82) translateY(3rem);
+    opacity: 0.35;
+    border-radius: 6rem;
+  }
+  50% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    border-radius: 1.5rem;
+  }
+  to {
+    transform: scale(1.06) translateY(-2rem);
+    opacity: 0.9;
+    border-radius: 1rem;
+  }
+}
+
+@keyframes sdParallax {
+  from {
+    transform: translateY(-8%) scale(1.12);
+  }
+  to {
+    transform: translateY(8%) scale(1.12);
+  }
+}
+
 /* Big quiet type for one-idea-per-screen panels */
 @utility display-lede {
   font-family: var(--font-display);
