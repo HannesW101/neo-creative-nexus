@@ -311,6 +311,27 @@
       animation-timeline: view();
       animation-range: entry 20% cover 60%;
     }
+
+    /* Curtain wipe: content is uncovered as it rises into view */
+    .sd-wipe {
+      animation: sdWipe linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    /* Lava sheet grows out of the page as you scroll through it */
+    .sd-bloom {
+      animation: sdBloom linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    /* Slow parallax lift for background art */
+    .sd-parallax {
+      animation: sdParallax linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
   }
 }
 
