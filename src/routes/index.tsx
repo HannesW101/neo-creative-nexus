@@ -225,9 +225,7 @@ function Home() {
           <h1 className="display-xl mt-8 max-w-5xl">
             <SplitLine text="Your website," delay={0.15} />
             <br />
-            <span className="ember-flow">
-              <SplitLine text="run for you" delay={0.35} />
-            </span>{" "}
+            <SplitLine text="run for you" innerClassName="ember-flow" delay={0.35} />
             <SplitLine text="monthly." delay={0.55} />
           </h1>
 
