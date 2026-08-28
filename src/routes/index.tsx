@@ -204,7 +204,7 @@ function Home() {
 
         <ClientOnly>
           <Suspense fallback={null}>
-            <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-[-6%] -z-10 h-[85%] w-full opacity-70 mix-blend-screen" />
+            <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-[-6%] -z-10 h-[90%] w-full opacity-95 mix-blend-screen" />
           </Suspense>
         </ClientOnly>
 
