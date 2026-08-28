@@ -1,14 +1,20 @@
-# Welcome to your Lovable project
+# Future Bloom Design
+
+Need to redesign the wesbite to be modern and look like it came out in 2026. Must use modern features and be very creative and actually unique interesting and beautiful/amamzing. No AI slop copywrighting and no em dashes or ; mid sentences.
+
+https://sevrenstudios.com/#process
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://neo-creative-nexus.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/f98dbb8e-c58d-48ac-a7ae-0d993dad1ab7).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +26,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
