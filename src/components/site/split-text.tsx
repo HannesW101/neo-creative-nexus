@@ -21,10 +21,10 @@ export function SplitLine({
       {words.map((w, i) => (
         <span key={`${w}-${i}`} className="split-word">
           <span
-            className={`split-inner ${innerClassName}`}
+            className="split-inner"
             style={{ animationDelay: `${delay + i * 0.07}s` } as CSSProperties}
           >
-            {w}
+            <span className={innerClassName}>{w}</span>
           </span>
         </span>
       ))}

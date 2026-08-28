@@ -204,7 +204,7 @@ function Home() {
 
         <ClientOnly>
           <Suspense fallback={null}>
-            <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-[-6%] -z-10 h-[90%] w-full opacity-95 mix-blend-screen" />
+            <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-[-4%] -z-10 h-[78%] w-full opacity-40 mix-blend-screen [mask-image:radial-gradient(70%_60%_at_50%_75%,black,transparent)]" />
           </Suspense>
         </ClientOnly>
 
@@ -455,7 +455,7 @@ function Home() {
         <Spotlight className="sd-in grain hairline-ember relative w-full overflow-hidden rounded-lg bg-surface p-10 md:p-20">
           <ClientOnly>
             <Suspense fallback={null}>
-              <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 w-full opacity-45 mix-blend-screen" />
+              <LavaCanvas className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 w-full opacity-30 mix-blend-screen [mask-image:linear-gradient(to_top,black,transparent)]" />
             </Suspense>
           </ClientOnly>
           <div className="breathe pointer-events-none absolute -bottom-32 -left-20 size-[30rem] rounded-full bg-ember/25 blur-[130px]" />
